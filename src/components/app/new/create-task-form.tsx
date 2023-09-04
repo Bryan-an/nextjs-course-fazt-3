@@ -15,7 +15,7 @@ interface IInput {
   touched: boolean;
 }
 
-const CreateTaskForm = () => {
+const AppCreateTaskForm = () => {
   const router = useRouter();
   const [title, setTitle] = useState<IInput>({ value: '', touched: false });
 
@@ -126,4 +126,4 @@ const CreateTaskForm = () => {
   );
 };
 
-export default CreateTaskForm;
+export default AppCreateTaskForm;

@@ -1,9 +1,9 @@
-import CreateTaskForm from '@/components/app/new/create-task-form';
+import AppCreateTaskForm from '@/components/app/new/create-task-form';
 
 const NewPage = () => {
   return (
     <div className="flex justify-center p-24">
-      <CreateTaskForm />
+      <AppCreateTaskForm />
     </div>
   );
 };

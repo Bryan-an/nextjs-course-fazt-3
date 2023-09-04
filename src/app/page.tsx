@@ -1,3 +1,4 @@
+import AppTaskCard from '@/components/app/task-card';
 import { ITaskModel } from '@/models/task.model';
 
 const fetchTasks = async (): Promise<ITaskModel[]> => {
@@ -18,19 +19,7 @@ const HomePage = async () => {
       {tasks.map((task, index) => (
         <>
           {index !== 0 && <div className="h-4" />}
-          <section
-            key={task.id}
-            className="bg-slate-700 shadow-sm shadow-slate-800 rounded-lg p-4 flex flex-col gap-2 w-96"
-          >
-            <header>
-              <h6 className="font-bold text-cyan-400/70 text-lg">
-                {task.title}
-              </h6>
-            </header>
-            <p className="font-normal text-slate-300 text-md">
-              {task.description}
-            </p>
-          </section>
+          <AppTaskCard task={task} key={task.id} />
         </>
       ))}
     </div>

@@ -55,6 +55,7 @@ const AppCreateTaskForm: React.FC<Props> = ({ taskToEdit }) => {
             console.log(data);
             toast.success(data.message);
             resetForm();
+            router.refresh();
             router.replace('/');
           })
           .catch((error) => {
@@ -76,6 +77,7 @@ const AppCreateTaskForm: React.FC<Props> = ({ taskToEdit }) => {
             console.log(data);
             toast.success(data.message);
             resetForm();
+            router.refresh();
             router.replace('/');
           })
           .catch((error) => {

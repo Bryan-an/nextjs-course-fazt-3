@@ -8,6 +8,7 @@ import FloppyDiskIcon from '@/icons/floppy-disk';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { ITaskModel } from '@/models/task.model';
 
 interface IInput {
   value: string;
@@ -15,12 +16,20 @@ interface IInput {
   touched: boolean;
 }
 
-const AppCreateTaskForm = () => {
+interface Props {
+  taskToEdit?: ITaskModel;
+}
+
+const AppCreateTaskForm: React.FC<Props> = ({ taskToEdit }) => {
   const router = useRouter();
-  const [title, setTitle] = useState<IInput>({ value: '', touched: false });
+
+  const [title, setTitle] = useState<IInput>({
+    value: taskToEdit?.title ?? '',
+    touched: false,
+  });
 
   const [description, setDescription] = useState<IInput>({
-    value: '',
+    value: taskToEdit?.description ?? '',
     touched: false,
   });
 
@@ -32,26 +41,49 @@ const AppCreateTaskForm = () => {
     if (validateForm()) {
       setLoading(true);
 
-      fetch('/api/tasks', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: title.value,
-          description: description.value,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          toast.success(data.message);
-          resetForm();
-          router.replace('/');
+      if (taskToEdit) {
+        fetch(`/api/tasks/${taskToEdit.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            title: title.value,
+            description: description.value,
+          }),
+          headers: { 'Content-Type': 'application/json' },
         })
-        .catch((error) => {
-          console.log(error);
-          toast.error(error.message);
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            toast.success(data.message);
+            resetForm();
+            router.replace('/');
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error(error.message);
+          })
+          .finally(() => setLoading(false));
+      } else {
+        fetch('/api/tasks', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: title.value,
+            description: description.value,
+          }),
+          headers: { 'Content-Type': 'application/json' },
         })
-        .finally(() => setLoading(false));
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            toast.success(data.message);
+            resetForm();
+            router.replace('/');
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error(error.message);
+          })
+          .finally(() => setLoading(false));
+      }
     }
   };
 
@@ -88,7 +120,7 @@ const AppCreateTaskForm = () => {
   return (
     <form className="w-80" onSubmit={handleSubmit}>
       <h2 className="text-4xl font-bold text-center text-cyan-400">
-        Create New Task
+        {taskToEdit ? 'Update' : 'Create New'} Task
       </h2>
       <div className="h-12" />
       <AppInput
@@ -117,7 +149,7 @@ const AppCreateTaskForm = () => {
       />
       <div className="h-12" />
       <AppPrimaryButton
-        text="Create Task"
+        text={taskToEdit ? 'Update Task' : 'Create Task'}
         icon={<FloppyDiskIcon />}
         type="submit"
         loading={loading}

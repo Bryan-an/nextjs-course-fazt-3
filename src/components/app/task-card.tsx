@@ -12,7 +12,7 @@ const AppTaskCard: React.FC<Props> = ({ task }) => {
 
   return (
     <section
-      className="bg-slate-700 shadow-sm shadow-slate-800 rounded-lg p-4 flex flex-col gap-2 w-96 hover:cursor-pointer active:bg-slate-700/80"
+      className="bg-slate-700 shadow-sm shadow-slate-800 rounded-lg p-4 flex flex-col gap-2 w-96 hover:cursor-pointer active:bg-slate-700/80 hover:scale-[1.030] transition-transform"
       onClick={() => router.push(`/tasks/edit/${task.id}`)}
     >
       <header>

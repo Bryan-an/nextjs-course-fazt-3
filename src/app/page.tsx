@@ -2,7 +2,10 @@ import AppTaskCard from '@/components/app/task-card';
 import { ITaskModel } from '@/models/task.model';
 
 const fetchTasks = async (): Promise<ITaskModel[]> => {
-  const res = await fetch('http://localhost:3000/api/tasks');
+  const res = await fetch('http://localhost:3000/api/tasks', {
+    cache: 'no-store',
+  });
+
   const { tasks }: { tasks: ITaskModel[] } = await res.json();
   return tasks;
 };
